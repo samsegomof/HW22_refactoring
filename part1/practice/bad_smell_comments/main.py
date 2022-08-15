@@ -7,26 +7,24 @@
 
 class Unit:
 
-    def __init__(self, field, x: int, y: int, state: str, speed: int, movement_type: str):
+    def __init__(self, field, state: str, speed: int, movement_type: str):
         """
         :param field: игровое поле
-        :param x: x-координата
-        :param y: у-координата
         :param state: может "ползти" или "лететь"
         """
         self._field = field
-        self._x = x
-        self._y = y
         self._movement_type = movement_type
         self._speed = speed
 
-    def move(self, destination):
+    def move(self, destination, x, y):
         """Передвижение объекта"""
+        x = int()
+        y = int()
         speed = self._calc_speed(self._speed)
-        up_state = self._field.set_unit(y=self._y + speed, x=self._x, unit=self)
-        down_state = self._field.set_unit(y=self._y - speed, x=self._x, unit=self)
-        right_state = self._field.set_unit(y=self._y, x=self._x + speed, unit=self)
-        left_state = self._field.set_unit(y=self._y, x=self._x - speed, unit=self)
+        up_state = self._field.set_unit(y=y + speed, x=x, unit=self)
+        down_state = self._field.set_unit(y=y - speed, x=x, unit=self)
+        right_state = self._field.set_unit(y=y, x=x + speed, unit=self)
+        left_state = self._field.set_unit(y=y, x=x - speed, unit=self)
 
         states = {'UP': up_state,
                   'DOWN': down_state,
