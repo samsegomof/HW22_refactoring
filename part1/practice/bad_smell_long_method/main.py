@@ -7,34 +7,28 @@
 # Конечно, вы можете попробовать разобраться как она 
 # это делает, но мы бы советовали разнести функционал 
 # по более узким функциям и написать их с нуля
-from typing import List
 
 csv = """Вася;39\nПетя;26\nВасилий Петрович;9"""
 
 
-def get_users_list(users: str) -> List[dict]:
-    """Чтение данных из строки"""
-    users_list = []
-    for line in users.split('\n'):
-        name, age = line.split(';')
-        users_list.append({'name': name, 'age': int(age)})
-    return users_list
+def _read(csv: str) -> list:
+    return [x.split(';') for x in csv.split('\n')]
 
 
-def sort_by_age(users: List[dict]) -> List[dict]:
-    """Сортировка пользователей по возрасту по возрастанию, с применением пузырьковой сортировки"""
-    for i in range(len(users) - 1):
-        for j in range(len(users) - i - 1):
-            if users[j]['age'] > users[j+1]['age']:
-                users[j], users[j+1] = users[j+1], users[j]
-    return users
+def _sort(data: list):
+    return sorted(data, key=lambda x: int(x[1]))
 
 
-def get_users(users: str, age_limit: int = 10) -> List[dict]:
-    """Получение пользователей с возрастом ниже возрастного ограничения"""
-    users_list = sort_by_age(get_users_list(users))
-    return [user for user in users_list if user['age'] < age_limit]
+def _filter(data: list):
+    return list(filter(lambda x: int(x[1]) > 10, data))
+
+
+def get_users_list():
+    data = _read(csv)
+    _sort(data)
+    return _filter(data)
 
 
 if __name__ == '__main__':
-    print(get_users(csv, 55))
+    print(get_users_list())
+
